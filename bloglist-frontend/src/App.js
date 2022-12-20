@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import NewBlog from './components/NewBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -9,6 +10,11 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [errorMessage, setErrorMessage] = useState(null)
   const [user, setUser] = useState(null)
+
+
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -22,6 +28,7 @@ const App = () => {
     if (userLogin) {
       const user = JSON.parse(userLogin)
       setUser(user)
+      blogService.setToken(user.token)
     }
 
 
@@ -34,10 +41,10 @@ const App = () => {
         username, password
       })
       setUser(userInfo)
+      window.localStorage.setItem('loggedInUser', JSON.stringify(userInfo))
+      blogService.setToken(user.token)
       setPassword('')
       setUsername('')
-
-      window.localStorage.setItem('loggedInUser', JSON.stringify(userInfo))
 
     } catch (exception) {
       setErrorMessage('Wrong credentials')
@@ -45,6 +52,24 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+  
+  const handleNewBlog = async (event) => {
+    event.preventDefault()
+    const newBlog = {
+      "author" : author,
+      "title" : title, 
+      "url" : url
+    }
+    const postNewBlog = await blogService.create(newBlog)
+    console.log(postNewBlog)
+
+    setBlogs(blogs.concat(postNewBlog))
+
+    setTitle('')
+    setAuthor('')
+    setUrl('')
+    
   }
 
   const logOut = () => {
@@ -72,12 +97,14 @@ const App = () => {
   }
   return (
     <div>
-      <p>`User {user.name} is logged in`</p>
+      <p>User {user.name} is logged in</p>
       <button onClick={logOut}>Log out</button>
-      <h2>blogs</h2>
+      <h2>Blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
+      <h2>Create new</h2>
+      <NewBlog handleNewBlog={handleNewBlog} title={title} author={author} url={url} setUrl={setUrl} setTitle={setTitle} setAuthor={setAuthor}/>
     </div>
   )
 }
