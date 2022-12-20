@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import NewBlog from './components/NewBlog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Alert from './components/Alert'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -62,13 +63,17 @@ const App = () => {
       "url" : url
     }
     const postNewBlog = await blogService.create(newBlog)
-    console.log(postNewBlog)
 
     setBlogs(blogs.concat(postNewBlog))
 
     setTitle('')
     setAuthor('')
     setUrl('')
+
+    setErrorMessage(`${newBlog.title} was added successfully`)
+    setTimeout(() => {
+      setErrorMessage(null)
+    }, 5000)
     
   }
 
@@ -80,6 +85,7 @@ const App = () => {
   if (user === null) {
     return (
       <>
+      {errorMessage !== null && <Alert alertMessage={errorMessage}/>}
       <h1>Login to application</h1>
       <form onSubmit={handleLogin} >
         <div>
@@ -97,6 +103,7 @@ const App = () => {
   }
   return (
     <div>
+      {errorMessage !== null && <Alert alertMessage={errorMessage}/>}
       <p>User {user.name} is logged in</p>
       <button onClick={logOut}>Log out</button>
       <h2>Blogs</h2>
