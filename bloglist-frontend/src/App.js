@@ -58,6 +58,15 @@ const App = () => {
     }
   }
 
+  const handleDelete = async (blog) => {
+    if (window.confirm(`Do you want to delete ${blog.title}?`)) {
+      const del = await blogService.deleteBlog(blog.id)
+
+      setBlogs(blogs.filter(b => b.id !== blog.id))
+    }
+    
+  }
+
   const handleLike = async (blog) => {
     const newBlog = {...blog, likes : blog.likes + 1} 
 
@@ -121,7 +130,7 @@ const App = () => {
       <button onClick={logOut}>Log out</button>
       <h2>Blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog)}/>
+        <Blog key={blog.id} user={user} blog={blog} handleLike={() => handleLike(blog)} handleDelete={() => handleDelete(blog)}/>
       )}
       <h2>Create new</h2>
       <Togglable buttonLabel='New blog' ref={blogFormRef}>
