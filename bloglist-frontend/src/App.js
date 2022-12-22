@@ -5,6 +5,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Alert from './components/Alert'
 import Togglable from './components/Togglable'
+import axios from 'axios'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -55,6 +56,15 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const handleLike = async (blog) => {
+    const newBlog = {...blog, likes : blog.likes + 1} 
+
+    const update = await blogService.update(blog.id, newBlog)
+
+    setBlogs(blogs.map(b => b.id !== blog.id ? b : newBlog))
+
   }
   
   const handleNewBlog = async (event) => {
@@ -111,7 +121,7 @@ const App = () => {
       <button onClick={logOut}>Log out</button>
       <h2>Blogs</h2>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLike={() => handleLike(blog)}/>
       )}
       <h2>Create new</h2>
       <Togglable buttonLabel='New blog' ref={blogFormRef}>
