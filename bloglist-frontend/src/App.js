@@ -126,7 +126,7 @@ const App = () => {
   return (
     <div>
       {errorMessage !== null && <Alert alertMessage={errorMessage}/>}
-      <p>User {user.name} is logged in</p>
+      <p>User is logged in</p>
       <button onClick={logOut}>Log out</button>
       <h2>Blogs</h2>
       {blogs.map(blog =>
