@@ -52,13 +52,8 @@ describe('Blog app', function() {
       beforeEach(function () {
         // Logging in through UI is slow
         // so we'll use the BE endpoint
-        cy.request('POST', 'http://localhost:3003/api/login', {"username" : "testUser", "password" : "123654"})
-        .then((response) => {
-          window.localStorage.setItem('loggedinUser', response)
+        cy.login({username : 'testUser', password : '123654'})
         })
-        cy.visit('http://localhost:3000')
-      })
-
       it('Logging in through API works', function() {
         cy.contains('User is logged in')
       })
