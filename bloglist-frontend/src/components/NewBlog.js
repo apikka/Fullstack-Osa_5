@@ -5,19 +5,19 @@ const NewBlog = ( {title, author, url, handleNewBlog, setUrl, setTitle, setAutho
         <form onSubmit={handleNewBlog}>
             <div>
                 Title 
-                <input type='text' value={title} onChange={({target}) => setTitle(target.value)}/>
+                <input data-cy='title' type='text' value={title} onChange={({target}) => setTitle(target.value)}/>
             </div>
 
             <div>
                 Author 
-                <input type='text' value={author} onChange={({target}) => setAuthor(target.value)}/>
+                <input data-cy='author' type='text' value={author} onChange={({target}) => setAuthor(target.value)}/>
             </div>
 
             <div>
                 URL 
-                <input type='text' value={url} onChange={({target}) => setUrl(target.value)}/>
+                <input data-cy='url' type='text' value={url} onChange={({target}) => setUrl(target.value)}/>
             </div>
-            <button type="submit">Create a new</button>
+            <button data-cy='createNewBlog' type="submit">Create a new</button>
         </form>
     )
 }

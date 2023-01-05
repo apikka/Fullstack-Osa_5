@@ -133,7 +133,7 @@ const App = () => {
         <Blog key={blog.id} user={user} blog={blog} handleLike={() => handleLike(blog)} handleDelete={() => handleDelete(blog)}/>
       )}
       <h2>Create new</h2>
-      <Togglable buttonLabel='New blog' ref={blogFormRef}>
+      <Togglable buttonLabel='New blog' ref={blogFormRef} datacy="newBlog">
         <NewBlog handleNewBlog={handleNewBlog} title={title} author={author} url={url} setUrl={setUrl} setTitle={setTitle} setAuthor={setAuthor}/>
       </Togglable>
     </div>

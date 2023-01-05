@@ -54,8 +54,21 @@ describe('Blog app', function() {
         // so we'll use the BE endpoint
         cy.login({username : 'testUser', password : '123654'})
         })
-      it('Logging in through API works', function() {
-        cy.contains('User is logged in')
+      it('A blog can be created', function() {
+        cy.get('[data-cy="newBlog').click()
+        cy.contains('Title')
+        cy.contains('Author')
+        cy.contains('URL')
+
+        cy.get('[data-cy="title"]').type('Title of the new blog')
+        cy.get('[data-cy="author"]').type('Author of the new blog')
+        cy.get('[data-cy="url"]').type('https://testurl.com')
+
+        cy.get('[data-cy="createNewBlog"]').click()
+
+        cy.contains('Title of the new blog')
+        cy.contains('Author of the new blog')
+        
       })
 
     })
