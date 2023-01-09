@@ -67,8 +67,16 @@ describe('Blog app', function() {
         cy.get('[data-cy="createNewBlog"]').click()
 
         cy.contains('Title of the new blog')
-        cy.contains('Author of the new blog')
-        
+        cy.contains('Author of the new blog')        
+      })
+
+      it('Blog can be liked', function() {
+        cy.createBlog({title : "A new blog", author : "Test author", url : "http://testurl.com"})
+
+        cy.get('[data-cy="blog"]').contains(0) // Because zero likes in a new blog
+        cy.get('[data-cy="like"]').click()
+        cy.reload()
+        cy.get('[data-cy="blog"]').contains(1) // Not sure if this is the best way
       })
 
     })
