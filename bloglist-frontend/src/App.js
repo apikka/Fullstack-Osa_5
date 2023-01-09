@@ -127,7 +127,7 @@ const App = () => {
     <div>
       {errorMessage !== null && <Alert alertMessage={errorMessage}/>}
       <p>User is logged in</p>
-      <button onClick={logOut}>Log out</button>
+      <button data-cy='logout' onClick={logOut}>Log out</button>
       <h2>Blogs</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} user={user} blog={blog} handleLike={() => handleLike(blog)} handleDelete={() => handleDelete(blog)}/>

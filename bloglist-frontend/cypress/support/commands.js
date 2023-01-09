@@ -7,6 +7,11 @@ Cypress.Commands.add('login', ( { username, password } ) => {
     })
 })
 
+Cypress.Commands.add('logout', () => {
+    cy.get('[data-cy="logout"]').click()
+    cy.visit('http://localhost:3000')
+})
+
 Cypress.Commands.add('createBlog', ( {title, author, url}) => {
     const newBlog = {
         "author" : author,

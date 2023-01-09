@@ -11,6 +11,7 @@ describe('Blog app', function() {
       // Backend runs in localhost:3003
       cy.request('POST', 'http://localhost:3003/api/reset')
       cy.request('POST', 'http://localhost:3003/api/users', {'username' : 'testUser', 'password' : '123654'})
+      cy.request('POST', 'http://localhost:3003/api/users',{'username' : 'testUser2', 'password' : '123654'})
 
       // Frontend runs in localhost:3000
       cy.visit('http://localhost:3000')
@@ -77,6 +78,24 @@ describe('Blog app', function() {
         cy.get('[data-cy="like"]').click()
         cy.reload()
         cy.get('[data-cy="blog"]').contains(1) // Not sure if this is the best way
+      })
+
+      it('Blog can be deleted', function() {
+        cy.createBlog({title : "A new blog", author : "Test author", url : "http://testurl.com"})
+
+        cy.get('[data-cy="blog"]').contains("A new blog")
+        cy.get('[data-cy="delete"]').click()
+
+        cy.contains("A new blog").should('not.exist')
+      })
+
+      it('Only user that added the blog can delete it', function() {
+        cy.createBlog({title : "A blog that can't be deleted", author : "Test author", url : "http://testurl.com"})
+
+        cy.logout()
+
+        cy.login({username : 'testUser2', password : '123654'})
+        cy.contains('Delete').should('not.exist')
       })
 
     })

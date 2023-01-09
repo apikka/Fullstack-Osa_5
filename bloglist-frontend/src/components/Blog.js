@@ -5,7 +5,7 @@ const Blog = ({blog, handleLike, handleDelete, user}) => {
     <div data-cy='blog'>
       {blog.title} {blog.author} {blog.likes}
       <button data-cy='like' onClick={handleLike}>Like</button>
-      <button style={visible} onClick={handleDelete}>Delete</button>
+      <button data-cy='delete' style={visible} onClick={handleDelete}>Delete</button>
     </div>  
   )
 }
