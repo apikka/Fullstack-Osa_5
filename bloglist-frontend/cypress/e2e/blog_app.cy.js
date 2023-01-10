@@ -9,6 +9,7 @@ describe('Blog app', function() {
       // take a look at the BE repository
       // files in ../controllers in particular
       // Backend runs in localhost:3003
+      // Login info could be in .env
       cy.request('POST', 'http://localhost:3003/api/reset')
       cy.request('POST', 'http://localhost:3003/api/users', {'username' : 'testUser', 'password' : '123654'})
       cy.request('POST', 'http://localhost:3003/api/users',{'username' : 'testUser2', 'password' : '123654'})
@@ -16,7 +17,7 @@ describe('Blog app', function() {
       // Frontend runs in localhost:3000
       cy.visit('http://localhost:3000')
     })
-  
+
     it('Login form is shown', function() {
       cy.contains('Username')
       cy.contains('Password')
@@ -96,6 +97,28 @@ describe('Blog app', function() {
 
         cy.login({username : 'testUser2', password : '123654'})
         cy.contains('Delete').should('not.exist')
+      })
+
+      it('Blogs are ordered according to likes', function() {
+        // This is WIP
+        cy.createBlog({title : "Blog with 2nd most likes", author : "Test author", url : "http://testurl.com"})
+        cy.createBlog({title : "Blog with the most likes", author : "Test author", url : "http://testurl.com"})
+
+        cy.get('.blog').contains('Blog with 2nd most likes').contains('Like').click()
+        
+        cy.wait(400)
+
+        cy.get('.blog').contains('Blog with the most likes').contains('Like').click()
+
+        cy.wait(400)
+
+        cy.get('.blog').contains('Blog with the most likes').contains('Like').click()
+
+        cy.reload()
+
+        cy.get('.blog').eq(0).contains('Blog with the most likes')
+
+
       })
 
     })
